@@ -1,4 +1,4 @@
-import { Task } from "../types/Task";
+import { TaskType } from "../types/TaskType";
 
 const lowPriorityIcon = (
   <svg
@@ -32,7 +32,12 @@ const highPriorityIcon = (
   </svg>
 );
 
-const TaskCard = ({ task }: { task: Task }) => {
+const TaskCard = ({ task, updateTaskPoints }: { 
+  task: TaskType,
+  updateTaskPoints: (task: TaskType, points: number) => void 
+}) => {
+  const points = task.points || 0;
+
   return (
     <div className="border rounded-lg px-2 m-2 bg-gray-300 w-56">
       <div className="text-base font-base py-2">{task.title}</div>
@@ -43,7 +48,11 @@ const TaskCard = ({ task }: { task: Task }) => {
           {task.priority === "medium" && mediumPriorityIcon}
           {task.priority === "high" && highPriorityIcon}
         </div>
-        <div>{task.points}</div>
+        <div className="flex gap-2 items-center" >
+          <button onClick={() => updateTaskPoints(task, points - 1)}>-</button>
+          <div className="font-bold">{points}</div>
+          <button onClick={() => updateTaskPoints(task, points + 1)}>+</button>
+        </div>
       </div>
     </div>
   );
