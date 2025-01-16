@@ -1,18 +1,13 @@
 import "./App.css";
+import TaskCard from "./components/task-card";
 
 function App() {
-  const title: string = "Do Market Research";
-  const id: string = "BUS-1";
-  const points: number = 5;
-
   return (
-    <div className="border rounded-lg px-2 m-2 bg-gray-300">
-      <div className="text-base font-semibold py-2">{title}</div>
-      <div className="flex gap-4 justify-between">
-        <div>{id}</div>
-        <div>{points}</div>
-      </div>
-    </div>
+    <>
+      {TaskCard("Conduct User Interviews", "UX-23", 8)}
+      {TaskCard("Optimize Database Queries", "DB-17", 13)}
+      {TaskCard("Design Landing Page", "UI-09", 5)}
+    </>
   );
 }
 
