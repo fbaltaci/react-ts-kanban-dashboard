@@ -1,5 +1,5 @@
 import "./App.css";
-import TaskCard from "./components/task-card";
+import TaskCard from "./components/TaskCard";
 
 function App() {
   return (
