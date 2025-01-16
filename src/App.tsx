@@ -4,9 +4,10 @@ import TaskCard from "./components/task-card";
 function App() {
   return (
     <>
-      {TaskCard("Conduct User Interviews", "UX-23", 8)}
-      {TaskCard("Optimize Database Queries", "DB-17", 13)}
-      {TaskCard("Design Landing Page", "UI-09", 5)}
+      <TaskCard task={{ title: "Conduct User Interviews", id: "UX-23", points: 8 }} />
+      <TaskCard task={{ title: "Optimize Database Queries", id: "DB-17", points: 13 }} />
+      <TaskCard task={{ title: "Design Landing Page", id: "UI-09", points: 5 }} />
+      <TaskCard task={{ title: "Implement Authentication", id: "BE-12", points: 10 }} />
     </>
   );
 }
