@@ -1,20 +1,32 @@
 import "./App.css";
 import TaskCard from "./components/TaskCard";
-import { Task } from "./types/Task";
-
-const tasks: Task[] = [
-  { title: "Conduct User Interviews", id: "UX-23", points: 8 },
-  { title: "Optimize Database Queries", id: "DB-17", points: 13 },
-  { title: "Design Landing Page", id: "UI-09", points: 5 },
-  { title: "Implement Authentication", id: "BE-12", points: 10 },
-];
+import tasks from "./data/TasksData";
+import statuses from "./data/StatusesData";
 
 function App() {
+  const columns = statuses.map((status) => {
+    const taksInColumn = tasks.filter((task) => task.status === status);
+    return {
+      status,
+      tasks: taksInColumn,
+    };
+  });
+
   return (
     <>
-      {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
-      ))}
+      <h1 className="text-3xl text-center">React TS Kanban Dashboard</h1>
+      <div className="flex divide-x">
+        {columns.map((column) => (
+          <div key={column.status}>
+            <h2 className="text-center text-3xl p-2 capitalize font-bold text-gray-500">
+              {column.status}
+            </h2>
+            {column.tasks.map((task) => (
+              <TaskCard task={task} />
+            ))}
+          </div>
+        ))}
+      </div>
     </>
   );
 }

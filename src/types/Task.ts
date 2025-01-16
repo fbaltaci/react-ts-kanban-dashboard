@@ -1,5 +1,8 @@
+import { Status } from "./Status";
+
 export type Task = {
   title: string;
   id: string;
-  points: number;
+  status: Status;
+  points?: number;
 };
