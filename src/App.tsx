@@ -23,6 +23,13 @@ function App() {
     setTasks(updatedTasks);
   };
 
+  const updateTaskTitle = (task: TaskType, title: string) => {
+    const updatedTasks = tasks.map((t) => {
+      return t.id === task.id ? { ...t, title } : t;
+    });
+    setTasks(updatedTasks);
+  };
+
   return (
     <>
       <h1 className="text-3xl text-center">React TS Kanban Dashboard</h1>
@@ -34,7 +41,12 @@ function App() {
               {column.tasks.reduce((total, task) => total + (task?.points || 0), 0)}
             </div>
             {column.tasks.map((task) => (
-              <TaskCard key={task.id} task={task} updateTaskPoints={updateTaskPoints} />
+              <TaskCard
+                key={task.id}
+                task={task}
+                updateTaskPoints={updateTaskPoints}
+                updateTaskTitle={updateTaskTitle}
+              />
             ))}
           </div>
         ))}
