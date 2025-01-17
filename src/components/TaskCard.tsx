@@ -33,14 +33,9 @@ const highPriorityIcon = (
   </svg>
 );
 
-const TaskCard = ({
-  task,
-  updateTaskPoints,
-  updateTaskTitle
-}: {
+const TaskCard = ({task, updateTask}: {
   task: TaskType;
-  updateTaskPoints: (task: TaskType, points: number) => void;
-  updateTaskTitle: (task: TaskType, title: string) => void;
+  updateTask: (task: TaskType) => void;
 }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const points = task.points || 0;
@@ -50,7 +45,7 @@ const TaskCard = ({
     const index = fibonacciNumbers.indexOf(points);
     const newPoint = direction === "up" ? fibonacciNumbers[index + 1] || points : fibonacciNumbers[index - 1] || points;
     if (newPoint) {
-      updateTaskPoints(task, newPoint);
+      updateTask({...task, points: newPoint});
     }
   };
 
@@ -62,7 +57,7 @@ const TaskCard = ({
             autoFocus
             className="w-full"
             onBlur={() => setIsEditingTitle(false)}
-            onChange={(e) => updateTaskTitle(task, e.target.value)}
+            onChange={(e) => updateTask({...task, title: e.target.value})}
           />
         ) : (
           <div onClick={() => setIsEditingTitle(true)}>{task.title}</div>

@@ -16,16 +16,9 @@ function App() {
     };
   });
 
-  const updateTaskPoints = (task: TaskType, points: number) => {
+  const updateTask = (task: TaskType) => {
     const updatedTasks = tasks.map((t) => {
-      return t.id === task.id ? { ...t, points } : t;
-    });
-    setTasks(updatedTasks);
-  };
-
-  const updateTaskTitle = (task: TaskType, title: string) => {
-    const updatedTasks = tasks.map((t) => {
-      return t.id === task.id ? { ...t, title } : t;
+      return t.id === task.id ? task : t;
     });
     setTasks(updatedTasks);
   };
@@ -44,8 +37,7 @@ function App() {
               <TaskCard
                 key={task.id}
                 task={task}
-                updateTaskPoints={updateTaskPoints}
-                updateTaskTitle={updateTaskTitle}
+                updateTask={updateTask}
               />
             ))}
           </div>
