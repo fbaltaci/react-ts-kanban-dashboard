@@ -33,31 +33,39 @@ const highPriorityIcon = (
   </svg>
 );
 
-const TaskCard = ({task, updateTask}: {
-  task: TaskType;
-  updateTask: (task: TaskType) => void;
-}) => {
+const TaskCard = ({ task, updateTask }: { task: TaskType; updateTask: (task: TaskType) => void }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const points = task.points || 0;
 
+  /**
+   * Updates the points of the task based on the direction.
+   *
+   * @param direction - The direction to update the points ("up" or "down").
+   */
   const updatePoints = (direction: "up" | "down") => {
     const fibonacciNumbers = [1, 2, 3, 5, 8, 13];
     const index = fibonacciNumbers.indexOf(points);
     const newPoint = direction === "up" ? fibonacciNumbers[index + 1] || points : fibonacciNumbers[index - 1] || points;
     if (newPoint) {
-      updateTask({...task, points: newPoint});
+      updateTask({ ...task, points: newPoint });
     }
   };
 
   return (
-    <div className="border rounded-lg px-2 m-2 bg-gray-300 w-56">
+    <div
+      draggable
+      className="border rounded-lg px-2 m-2 bg-gray-300 w-56"
+      onDragStart={(e) => {
+        e.dataTransfer.setData("id", task.id);
+      }}>
       <div className="text-base font-base py-2" onClick={() => setIsEditingTitle(true)}>
         {isEditingTitle ? (
           <input
             autoFocus
             className="w-full"
+            value={task.title}
             onBlur={() => setIsEditingTitle(false)}
-            onChange={(e) => updateTask({...task, title: e.target.value})}
+            onChange={(e) => updateTask({ ...task, title: e.target.value })}
           />
         ) : (
           <div onClick={() => setIsEditingTitle(true)}>{task.title}</div>
