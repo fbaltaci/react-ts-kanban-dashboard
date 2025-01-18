@@ -41,6 +41,7 @@ function App() {
    */
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, status: StatusType) => {
     e.preventDefault();
+    setCurrentlyHoveringOver(null);
     const id = e.dataTransfer.getData("id");
     const task = tasks.find((task) => task.id === id);
     if (task) {
@@ -48,19 +49,36 @@ function App() {
     }
   };
 
+  const [currentlyHoveringOver, setCurrentlyHoveringOver] = useState<StatusType | null>(null);
+
+  /**
+   * Handles the drag enter event for a column.
+   *
+   * @param status - The status of the column.
+   */
+  const handleDragEnter = (status: StatusType) => {
+    setCurrentlyHoveringOver(status);
+  };
+
   return (
     <>
       <h1 className="text-3xl text-center">React TS Kanban Board</h1>
       <div className="flex divide-x">
         {columns.map((column) => (
-          <div key={column.status} onDrop={(e) => handleDrop(e, column.status)} onDragOver={(e) => e.preventDefault()}>
+          <div
+            key={column.status}
+            onDrop={(e) => handleDrop(e, column.status)}
+            onDragOver={(e) => e.preventDefault()}
+            onDragEnter={() => handleDragEnter(column.status)}>
             <div className="flex justify-between text-3xl p-2 font-bold text-gray-500">
               <h2 className="text-center capitalize">{column.status}</h2>
               {column.tasks.reduce((total, task) => total + (task?.points || 0), 0)}
             </div>
-            {column.tasks.map((task) => (
-              <TaskCard key={task.id} task={task} updateTask={updateTask} />
-            ))}
+            <div className={`h-full ${currentlyHoveringOver === column.status ? "bg-gray-200" : ""}`}>
+              {column.tasks.map((task) => (
+                <TaskCard key={task.id} task={task} updateTask={updateTask} />
+              ))}
+            </div>
           </div>
         ))}
       </div>
