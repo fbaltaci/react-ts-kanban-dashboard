@@ -3,11 +3,10 @@ import TaskCard from "./components/TaskCard";
 import statuses from "./data/StatusesData";
 import { TaskType } from "./types/TaskType";
 import { StatusType } from "./types/StatusType";
-import { useState } from "react";
-import { tasksData as initialTasksData } from "./data/TasksData";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [tasks, setTasks] = useState<TaskType[]>(initialTasksData);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
 
   /**
    * Generates an array of column objects, each representing a status column in the Kanban board.
@@ -27,6 +26,13 @@ function App() {
    * @param {TaskType} task - The updated task object.
    */
   const updateTask = (task: TaskType) => {
+    fetch(`http://localhost:3000/tasks/${task.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
     const updatedTasks = tasks.map((t) => {
       return t.id === task.id ? task : t;
     });
@@ -59,6 +65,15 @@ function App() {
   const handleDragEnter = (status: StatusType) => {
     setCurrentlyHoveringOver(status);
   };
+
+  /**
+   * Fetches tasks from the server and updates the tasks state.
+   */
+  useEffect(() => {
+    fetch("http://localhost:3000/tasks")
+      .then((res) => res.json())
+      .then((data) => setTasks(data));
+  }, [currentlyHoveringOver]);
 
   return (
     <>
